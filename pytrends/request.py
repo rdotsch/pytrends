@@ -207,13 +207,9 @@ class TrendReq(object):
 
         # make the request
         region_payload = dict()
-        if self.geo == '':
-            self.interest_by_region_widget['request']['resolution'] = resolution
-        elif self.geo == 'US' and resolution in ['DMA', 'CITY', 'REGION']:
-            self.interest_by_region_widget['request']['resolution'] = resolution
-            
+        self.interest_by_region_widget['request']['resolution'] = resolution            
         self.interest_by_region_widget['request']['includeLowSearchVolumeGeos'] = inc_low_vol
-        
+
         # convert to string as requests will mangle
         region_payload['req'] = json.dumps(self.interest_by_region_widget['request'])
         region_payload['token'] = self.interest_by_region_widget['token']
@@ -236,7 +232,7 @@ class TrendReq(object):
         result_df = df['value'].apply(lambda x: pd.Series(str(x).replace('[', '').replace(']', '').split(',')))
         if inc_geo_code:
             result_df['geoCode'] = df['geoCode']
-            
+
         # rename each column with its search term
         for idx, kw in enumerate(self.kw_list):
             result_df[kw] = result_df[idx].astype('int')
