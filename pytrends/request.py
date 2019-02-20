@@ -204,7 +204,6 @@ class TrendReq(object):
 
     def interest_by_region(self, resolution='COUNTRY', inc_low_vol=False, inc_geo_code=False):
         """Request data from Google's Interest by Region section and return a dataframe"""
-        print("In interest_by_region....")
 
         # make the request
         region_payload = dict()
