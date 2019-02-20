@@ -204,6 +204,7 @@ class TrendReq(object):
 
     def interest_by_region(self, resolution='COUNTRY', inc_low_vol=False, inc_geo_code=False):
         """Request data from Google's Interest by Region section and return a dataframe"""
+        print("In interest_by_region....")
 
         # make the request
         region_payload = dict()
@@ -226,8 +227,13 @@ class TrendReq(object):
         if (df.empty):
             return df
 
+        # If geoCode not in df, add empty column
+        if not 'geoCode' in df.columns:
+            df['geoCode'] = None
+
         # rename the column with the search keyword
         df = df[['geoName', 'geoCode', 'value']].set_index(['geoName']).sort_index()
+        
         # split list columns into seperate ones, remove brackets and split on comma
         result_df = df['value'].apply(lambda x: pd.Series(str(x).replace('[', '').replace(']', '').split(',')))
         if inc_geo_code:
